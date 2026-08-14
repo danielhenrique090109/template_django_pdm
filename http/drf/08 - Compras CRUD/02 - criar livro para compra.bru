@@ -27,11 +27,6 @@ body:json {
   }
 }
 
-script:post-response {
-  bru.setVar("livro_compra_id", res.body.id);
-  bru.setVar("titulo_livro_compra", res.body.titulo);
-}
-
 assert {
   res.status: eq 201
   res.body.id: isDefined
@@ -39,9 +34,14 @@ assert {
   res.body.quantidade: gt 0
 }
 
+script:post-response {
+  bru.setVar("livro_compra_id", res.body.id);
+  bru.setVar("titulo_livro_compra", res.body.titulo);
+}
+
 docs {
-POST /api/livros/ — criação de livro próprio de apoio para os testes de compra.
-Garante autonomia e reexecutabilidade da coleção sem depender de livros pré-existentes.
-Utiliza token de superuser obtido na pasta 07 (17 - login superuser.bru).
-Salva as variáveis `livro_compra_id` e `titulo_livro_compra` para uso nas requisições seguintes.
+  POST /api/livros/ — criação de livro próprio de apoio para os testes de compra.
+  Garante autonomia e reexecutabilidade da coleção sem depender de livros pré-existentes.
+  Utiliza token de superuser obtido na pasta 07 (17 - login superuser.bru).
+  Salva as variáveis `livro_compra_id` e `titulo_livro_compra` para uso nas requisições seguintes.
 }
