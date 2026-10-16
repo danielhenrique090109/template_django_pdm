@@ -2,14 +2,12 @@
 # Sai do script se houver algum erro
 set -o errexit
 
-# Atualiza o pip
-pip install --upgrade pip
-
-# Instala as dependências
-pip install -r requirements.txt
+# Instala o uv e sincroniza apenas as dependências de produção.
+pip install --upgrade uv
+uv sync --locked --no-dev
 
 # Coleta os arquivos estáticos
-python manage.py collectstatic --no-input
+uv run --no-sync python manage.py collectstatic --no-input
 
 # Aplica as migrações
-python manage.py migrate
+uv run --no-sync python manage.py migrate

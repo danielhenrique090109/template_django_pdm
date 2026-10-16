@@ -1,97 +1,71 @@
-# Template de projeto Django com DRF e PDM
+# Template Django com Django REST Framework e uv
 
-Esse é um template de projeto Django com DRF, PDM e muito mais. Ele já vem com algumas configurações e pacotes pré-instalados, como o PDM, Django, Django REST Framework, PostgreSQL, SQLite, Swagger, black, isort, Render, Cloudinary, Corsheaders, Django-Extensions, Django-Filter, dotenv, dj-database-url, drf-spectacular, gunicorn, netifaces, rest-framework-simplejwt, whitenoise e passage.id
+Template de uma API REST com Django e Django REST Framework, configurada para
+usar [uv](https://docs.astral.sh/uv/) na gestão de dependências e ambientes
+Python. O projeto inclui configuração para desenvolvimento local com SQLite e
+deploy com PostgreSQL, além de autenticação, documentação Swagger e suporte
+opcional ao Cloudinary.
 
-Esse template já está pronto para ser utilizado em produção, com o [Render](http://render.com) e o [PostgreSQL](https://www.postgresql.org/). Mas também pode ser utilizado em desenvolvimento, com o [PDM](https://pdm.fming.dev/) e o [SQLite](https://www.sqlite.org/index.html).
+## Requisitos
 
-O template também já vem com alguns arquivos de configuração pré-configurados, como:
+- Python 3.14 (versão selecionada em `.python-version`; o projeto aceita Python
+  3.10 ou superior)
+- [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
-- `pyproject.toml`: Arquivo de configuração do PDM.
-- `Procfile`: Arquivo de configuração do Fl0.
-- `settings.py`: Arquivo de configuração do Django.
-- `urls.py`: Arquivo de configuração das rotas do Django.
-- `wsgi.py`: Arquivo de configuração do Gunicorn.
-- `.env.exemplo`: Arquivo de exemplo de configuração das variáveis de ambiente.
-- `.gitignore`: Arquivo de configuração do Git, para ignorar arquivos e diretórios.
+## Instalação e configuração
 
-O template também traz o usuário padrão modificado, com o login sendo feito com o `e-mail` e não com o `username`. Inclusões de campos, como `telefone`, `data de nascimento` e `foto de perfil`, podem ser feitas facilmente.
+1. Crie um novo repositório a partir deste template.
+2. Instale as dependências e crie o ambiente virtual:
 
-O projeto Django criado chama-se `app` e a aplicação Django criada chama-se `core`. O projeto já vem com um modelo de usuário customizado, com autenticação pelo `passage.id`. Arquivos estáticos, como fotos, podem ser armazenados no [Cloudinary](https://cloudinary.com/).
-
-O projeto também já vem com a documentação da API, gerada automaticamente pelo Swagger, e com a formatação de código Python, feita pelo black e pelo isort.
-
-## Instalação e Configuração
-
-1. Certifique-se de ter o [Python](https://www.python.org/) instalado em seu sistema.
-
-2. Crie um novo projeto a partir desse template:
-- Acesse o _template_ em https://github.com/marrcandre/template_django_pdm.
-- Clique no botão `Use this template` em `Create a new repository`.
-- Preencha as informações solicitadas:
-  - `Owner`: <seu usuário no GitHub>
-  - `Repository name`: `livraria`
-- Click no botão `Create repository`.
-
-3. Abra o projeto no vscode e execute o terminal.
-
-2. Crie um ambiente virtual usando o [PDM](https://pdm.fming.dev/):
-
-   ```
-   pdm install
+   ```sh
+   uv sync --all-groups
    ```
 
-3. Crie o arquivo .env, a partir do arquivo .env.exemplo, e configure as variáveis de ambiente:
+   Ou use `make sync`.
 
-   ```
-   cp .env.exemplo .env
+3. Crie o arquivo `.env` com base no exemplo e ajuste as variáveis:
+
+   ```sh
+   cp .env.example .env
    ```
 
 4. Execute o servidor de desenvolvimento:
 
+   ```sh
+   uv run python manage.py runserver 127.0.0.1:8000
    ```
-   pdm run dev
-   ```
 
-5. Acesse a API em http://localhost:19003/api/
+   Ou use `make dev`. A API estará disponível em
+   `http://127.0.0.1:8000/api/`.
 
-## Uso da API
+## Comandos úteis
 
-A documentação completa dos endpoints da API e exemplos de uso estão disponíveis na [Documentação da API](http://localhost:19003/api/swagger/).
+O `Makefile` fornece atalhos que executam os comandos dentro do ambiente gerido
+por uv:
 
-## Comandos Úteis
+- `make sync`: sincroniza o ambiente com `uv.lock`, incluindo dependências de
+  desenvolvimento.
+- `make add package=PACOTE` / `make add-dev package=PACOTE`: adiciona uma
+  dependência de produção ou desenvolvimento.
+- `make migrate`: cria migrações, aplica-as e atualiza o diagrama `core.png`.
+- `make createsuperuser`, `make shell`, `make shellp` e `make test`: comandos
+  comuns do Django.
+- `make check-django`: verifica a configuração do Django.
+- `make loaddata` e `make dumpdata`: importa ou exporta dados.
+- `make cria-api args=ENTIDADE`: executa o gerador de arquivos da API.
+- `make check` / `make lint`, `make lint-fix` e `make format`: verifica ou
+  formata o código com Ruff.
 
-- `pdm run dev`: Executa o servidor de desenvolvimento. Antes de executar o servidor, descobre o endereço IP da máquina e atualiza o arquivo `.env` com o endereço IP.
-- `pdm run migrate`: Executa as migrações do banco de dados. Antes de executar o `migrate`, executa o `makemigrations`. Depois de executar o `migrate`, executa o `graph_models`, atualizando o diagrama de classes dos modelos do projeto.
-- Para mais detalhes, consulte o arquivo `pyproject.toml`, na seção `[tool.pdm.scripts]`.
+O arquivo `uv.lock` registra as versões resolvidas das dependências. Após
+alterar dependências, atualize-o com `uv lock` e sincronize o ambiente com
+`uv sync --all-groups`.
 
-## Detalhes do Projeto
+## Deploy
 
-Esse projeto utiliza os seguintes pacotes e tecnologias:
-
-- [PDM](https://pdm.fming.dev/): Gerenciador de pacotes e ambiente virtual para Python.
-- [Django](https://www.djangoproject.com/): Framework web de alto nível escrito em Python.
-- [Django REST Framework](https://www.django-rest-framework.org/): Framework para desenvolvimento de APIs REST com Django.
-- [PostgreSQL](https://www.postgresql.org/): Banco de dados relacional, utilizado no ambiente de produção.
-- [SQLite](https://www.sqlite.org/index.html): Banco de dados relacional, utilizado no ambiente de desenvolvimento.
-- [Swagger](https://swagger.io/): Framework para documentação de APIs REST.
-- [Ruff] (http://https://docs.astral.sh/ruff/): Linter e formatador de código Python, escrito em Rust.
-- [Render](http://render.com): Ferramenta de _deploy_ de aplicações _backend_.
-- [Cloudinary](https://cloudinary.com/): Serviço de armazenamento de arquivos estáticos em nuvem.
-- [Corsheaders](https://pypi.org/project/django-cors-headers/): Pacote para permitir que aplicações frontend acessem a API.
-- [Django-Extensions](https://django-extensions.readthedocs.io/en/latest/): Pacote com extensões para o Django, como o `shell_plus`, que permite acessar o shell do Django com todos os modelos importados e o comando `graph_models`, que gera um diagrama de classes dos modelos do projeto.
-- [Django-Filter](https://django-filter.readthedocs.io/en/stable/): Pacote para filtragem, ordenação e paginação de dados em APIs REST.
-- [dotenv](https://pypi.org/project/python-dotenv/): Pacote para carregar variáveis de ambiente a partir de um arquivo `.env`.
-- [dj-database-url](https://pypi.org/project/dj-database-url/): Pacote para configurar o banco de dados a partir de uma URL.
-- [drf-spectacular](https://drf-spectacular.readthedocs.io/en/latest/): Pacote para geração de documentação de APIs REST com o Swagger.
-- [gunicorn](https://gunicorn.org/): Pacote para servir aplicações Django em produção.
-- [netifaces](https://pypi.org/project/netifaces/): Pacote para obter o endereço IP da máquina.
-- [rest-framework-simplejwt](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/): Pacote para autenticação JWT em APIs REST.
-- [whitenoise](http://whitenoise.evans.io/en/stable/): Pacote para servir arquivos estáticos em aplicações Django.
-- [passage.id](https://passage.id): Pacote para autenticação de usuários.
+O `build.sh` instala uv, sincroniza as dependências de produção a partir do
+lockfile, coleta os arquivos estáticos e aplica as migrações. O `Procfile`
+executa o Gunicorn usando o ambiente criado pelo uv.
 
 ## Licença
 
-Este projeto está licenciado sob a [Licença GPL](https://www.gnu.org/licenses/gpl-3.0.html), uma licença de software livre.
-
-
-
+Este projeto está licenciado sob a [Licença GPL](https://www.gnu.org/licenses/gpl-3.0.html).
