@@ -52,11 +52,11 @@ O projeto também já vem com a documentação da API, gerada automaticamente pe
    pdm run dev
    ```
 
-5. Acesse a API em http://localhost:19003/api/
+5. Acesse a API em http://localhost:8000/api/
 
 ## Uso da API
 
-A documentação completa dos endpoints da API e exemplos de uso estão disponíveis na [Documentação da API](http://localhost:19003/api/swagger/).
+A documentação completa dos endpoints da API e exemplos de uso estão disponíveis na [Documentação da API](http://localhost:8000/api/swagger/).
 
 ## Comandos Úteis
 
